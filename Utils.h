@@ -23,6 +23,7 @@ namespace utils
 	//};
 
 	std::vector<int> get_random_tile_order(int width, int height);
+	std::vector<std::vector<int>> get_solved_tile_order(int width, int height);
 
 	Vec2 get_zero_position(std::vector < std::vector<int>> vector_2d);
 

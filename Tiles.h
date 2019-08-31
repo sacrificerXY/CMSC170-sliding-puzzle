@@ -9,9 +9,9 @@ struct Tiles
 {
 public: 
 	// variables
-	static Tiles new_solved(int width, int height);
-	static Tiles new_from_order(std::vector<std::vector<int>> tile_order);
-	static Tiles new_after_move(const Tiles& tiles, Vec2 move);
+	//static Tiles new_solved(int width, int height);
+	//static Tiles new_from_order(std::vector<std::vector<int>> tile_order);
+	//static Tiles new_after_move(const Tiles& tiles, Vec2 move);
 
 	Tiles& do_move(Vec2 move);
 	int& at(Vec2 v);
@@ -22,11 +22,14 @@ public:
 	Vec2 get_zero_position() const;
 
 
-	Tiles() = default;
+	//Tiles() = default;
+	Tiles(int width, int height);
+	Tiles(std::vector<std::vector<int>> tile_order);
+	Tiles(const Tiles& tiles, Vec2 move);
 private:
 	//Tiles(int width, int height, std::vector<int> tile_order={});
-	Vec2 _zero_pos;
 	std::vector<std::vector<int>> _tiles;
+	Vec2 _zero_pos;
 
 	//Tiles(const Tiles* tiles, Vec2 move);
 

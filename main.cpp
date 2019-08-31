@@ -25,15 +25,16 @@ int main()
 	{
 		cout << x << ',' << y << '\n';
 	}
-	Tiles tiles = Tiles::new_from_order({ {1, 2}, {3, 0} });
+	Tiles tiles{ {{1, 2}, {3, 0}} };
 	GraphNode* rr = new GraphNode(tiles);
 	GraphNode* rr2 = new GraphNode(rr, Vec2::UP);
-	tiles = Tiles::new_after_move(tiles, Vec2::LEFT);
+	//tiles = Tiles{ tiles, Vec2::LEFT };
 	//tiles.do_move(Vec2::UP)
 	//	.do_move(Vec2::LEFT)
 	//	.do_move(Vec2::DOWN);
 	cout << rr->tiles << '\n';
 	cout << rr2->tiles << '\n';
+	cout << "tiles: " << tiles;
 	cout << "zero: " << tiles.get_zero_position();
 	return 0;
 	//vector<vector<int>> aa = { {1,2,3},{4,5,6},{7,8,9} };
@@ -52,88 +53,88 @@ int main()
 
 	Moveset moveset(width, height);
 	//const State* state = State::create_ordered(width, height, { 8, 6, 7, 2, 5, 4, 3, 0, 1 });
-	const State* state = State::create_ordered(width, height, utils::get_random_tile_order(width, height));
+	//const State* state = State::create_ordered(width, height, utils::get_random_tile_order(width, height));
 	//const State* state = State::create_solved(width, height);
-	while (!state->is_solvable())
-	{
-		state = State::create_ordered(width, height, utils::get_random_tile_order(width, height));
-	}
-	cout << state->is_solvable() << '\n';
+	//while (!state->is_solvable())
+	//{
+	//	state = State::create_ordered(width, height, utils::get_random_tile_order(width, height));
+	//}
+	//cout << state->is_solvable() << '\n';
 	//return 0;
-	const State* root = state;
+	//const State* root = state;
 	//state = state->do_move(Vec2::UP);
 	//state = state->do_move(Vec2::UP);
 	//state = state->do_move(Vec2::LEFT);
 	//state = state->do_move(Vec2::DOWN);
 
-		cout << 's' << state->tiles << '\n';
+		//cout << 's' << state->tiles << '\n';
 
-	const State* curr_state = state;
-	vector<const State*> open_states;
-	vector<const State*> closed_states;
-	vector<Vec2> open_moves;
-	vector<Vec2> start_moves = moveset(state->tiles.get_zero_position());
-	open_moves.insert(open_moves.end(), start_moves.begin(), start_moves.end());
+	//const State* curr_state = state;
+	//vector<const State*> open_states;
+	//vector<const State*> closed_states;
+	//vector<Vec2> open_moves;
+	//vector<Vec2> start_moves = moveset(state->tiles.get_zero_position());
+	//open_moves.insert(open_moves.end(), start_moves.begin(), start_moves.end());
 
-	open_states.push_back(curr_state);
+	//open_states.push_back(curr_state);
 
-	int max_iter = 125;
-	int i = 0;
+	//int max_iter = 125;
+	//int i = 0;
 
-	while (!open_states.empty() && i < max_iter)
-	{
-		//cout << i << ' ';
-		//cout << i << '\n';
-		//int ss = open_states.size();
-		curr_state = utils::pop_front(open_states);
-		//assert(ss == open_states.size() + 1);
-		if (curr_state->is_solved())
-		{
-			cout << "SOLVED\n";
-			cout << curr_state->tiles << '\n';
-			break;
-		}
-		for (Vec2 move : moveset(curr_state->tiles.get_zero_position()))
-		{
-			//cout << move << '\n';
-			const State* new_state = curr_state->do_move(move);
-			//cout << 'm' << curr_state->tiles.zero_pos << " --> " << new_state->tiles.zero_pos << '\n';
-			bool found = false;
-			for (const State* s : closed_states)
-			{
-				if (s->tiles == new_state->tiles)
-				{
-					if (new_state->steps < s->steps)
-					{
-						delete s;
-						s = new_state;
-					}
-					else
-					{
-						found = true;
-						break;
+	//while (!open_states.empty() && i < max_iter)
+	//{
+	//	//cout << i << ' ';
+	//	//cout << i << '\n';
+	//	//int ss = open_states.size();
+	//	curr_state = utils::pop_front(open_states);
+	//	//assert(ss == open_states.size() + 1);
+	//	if (curr_state->is_solved())
+	//	{
+	//		cout << "SOLVED\n";
+	//		cout << curr_state->tiles << '\n';
+	//		break;
+	//	}
+	//	for (Vec2 move : moveset(curr_state->tiles.get_zero_position()))
+	//	{
+	//		//cout << move << '\n';
+	//		const State* new_state = curr_state->do_move(move);
+	//		//cout << 'm' << curr_state->tiles.zero_pos << " --> " << new_state->tiles.zero_pos << '\n';
+	//		bool found = false;
+	//		for (const State* s : closed_states)
+	//		{
+	//			if (s->tiles == new_state->tiles)
+	//			{
+	//				if (new_state->steps < s->steps)
+	//				{
+	//					delete s;
+	//					s = new_state;
+	//				}
+	//				else
+	//				{
+	//					found = true;
+	//					break;
 
-					}
-				}
-			}
-			if (!found)
-				open_states.push_back(new_state);
-		}
-		closed_states.push_back(curr_state);
-		sort(open_states.begin(), open_states.end(), [](const State* s1, const State* s2) {
-			return s1->get_total_cost() < s2->get_total_cost(); 
-		});
+	//				}
+	//			}
+	//		}
+	//		if (!found)
+	//			open_states.push_back(new_state);
+	//	}
+	//	closed_states.push_back(curr_state);
+	//	sort(open_states.begin(), open_states.end(), [](const State* s1, const State* s2) {
+	//		return s1->get_total_cost() < s2->get_total_cost(); 
+	//	});
 
-		i++;
+	//	i++;
 
-		//cout << "---\n" << curr_state->tiles << '\n';
-	}
+	//	//cout << "---\n" << curr_state->tiles << '\n';
+	//}
 
-	for (state = curr_state; state; state = state->prev_state)
-	{
-		cout << '-' << state->tiles << '\n';
+	//for (state = curr_state; state; state = state->prev_state)
+	//{
+	//	cout << '-' << state->tiles << '\n';
 
-	}
+	//}
 
 	//vector<vector<int>> tiles = { {0, 1}, {2, 3} }
 	//for (int y = 0; y < height; /*y++)

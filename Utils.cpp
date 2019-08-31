@@ -19,6 +19,17 @@ namespace utils
 		return tile_order;
 	}
 
+	std::vector<std::vector<int>> get_solved_tile_order(int width, int height)
+	{
+			vector<vector<int>> solved_order(height, vector<int>(width));
+			for_loop_yx(width, height)
+			{
+				solved_order[y][x] = y * width + x + 1;
+			}
+			solved_order.back().back() = 0;
+			return solved_order;
+	}
+
 	Vec2 get_zero_position(std::vector<std::vector<int>> vector_2d)
 	{
 		for (int y = 0; y < vector_2d.size(); y++)
