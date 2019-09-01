@@ -57,6 +57,50 @@ Vec2 Tiles::get_zero_position() const
 	return _zero_pos;
 }
 
+bool Tiles::is_solved() const
+{
+	int width = _tiles[0].size();
+	int height = _tiles.size();
+	return _tiles == utils::get_solved_tile_order(width, height);
+}
+
+bool Tiles::is_solvable() const
+{
+	int inversions = 0;
+	int width = _tiles[0].size();
+	int height = _tiles.size();
+
+	auto indexToVec2 = [width](int i) {
+		return Vec2(
+			i % width
+			,
+			int(i / width)
+		);
+	};
+
+	for (int i = 0; i < width * height; i++) {
+		// Check if a larger number exists after the current
+		// place in the array, if so increment inversions.
+		for (int j = i + 1; j < width * height; j++)
+			if (at(indexToVec2(i)) < at(indexToVec2(j))) inversions++;
+
+		//// Determine if the distance of the blank space from the bottom 
+		//// right is even or odd, and increment inversions if it is odd.
+		//if (at(indexToVec2(i)) == 0 && i % 2 == 1) inversions++;
+	}
+	cout << "inv: " << inversions << '\n';
+	bool width_odd = (width % 2 == 1);
+	bool inversions_even = (inversions % 2 == 0);
+	bool zero_on_odd_row_from_bottom = (((height - _zero_pos.y) % 1) == 1);
+
+	if (width_odd && inversions_even) return true;
+	if (!width_odd && (zero_on_odd_row_from_bottom == inversions_even)) return true;
+	return false;
+
+	// If inversions is even, the puzzle is solvable.
+	return (inversions % 2 == 0);
+}
+
 bool operator==(const Tiles& t1, const Tiles& t2)
 {
 	return t1._tiles == t2._tiles;

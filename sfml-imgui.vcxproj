@@ -172,15 +172,15 @@
     <ClCompile Include="imgui_draw.cpp" />
     <ClCompile Include="imgui_widgets.cpp" />
     <ClCompile Include="main.cpp" />
-    <ClCompile Include="Move.cpp" />
-    <ClCompile Include="State.cpp" />
+    <ClCompile Include="Moveset.cpp" />
+    <ClCompile Include="GraphNode.cpp" />
     <ClCompile Include="Tiles.cpp" />
     <ClCompile Include="Utils.cpp" />
     <ClCompile Include="Vec2.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Move.h" />
-    <ClInclude Include="State.h" />
+    <ClInclude Include="Moveset.h" />
+    <ClInclude Include="GraphNode.h" />
     <ClInclude Include="Tiles.h" />
     <ClInclude Include="Utils.h" />
     <ClInclude Include="Vec2.h" />

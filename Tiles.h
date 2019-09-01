@@ -7,31 +7,35 @@
 
 struct Tiles
 {
-public: 
-	// variables
-	//static Tiles new_solved(int width, int height);
-	//static Tiles new_from_order(std::vector<std::vector<int>> tile_order);
-	//static Tiles new_after_move(const Tiles& tiles, Vec2 move);
-
+public:
+	// Swaps the zero tile in the direction specified by the move vector
 	Tiles& do_move(Vec2 move);
-	int& at(Vec2 v);
-	int& at(int x, int y);
-	int at(Vec2 v) const;
-	int at(int x, int y) const;
-	//Tiles do_move2(Vec2 move) const;
+
+	// Returns the x,y position of the zero tile / empty tile
 	Vec2 get_zero_position() const;
 
+	bool is_solved() const;
+	bool is_solvable() const;
 
-	//Tiles() = default;
+	// Access tiles by x,y coordinates
+	int& at(int x, int y);
+	int at(int x, int y) const;
+	int& at(Vec2 v);
+	int at(Vec2 v) const;
+
+
+	// Creates tiles in a solved state
 	Tiles(int width, int height);
+
+	// Creates tiles with a given tile order
 	Tiles(std::vector<std::vector<int>> tile_order);
+
+	// Creates tiles which would be the result if passed in tiles were to do the move
 	Tiles(const Tiles& tiles, Vec2 move);
+
 private:
-	//Tiles(int width, int height, std::vector<int> tile_order={});
 	std::vector<std::vector<int>> _tiles;
 	Vec2 _zero_pos;
-
-	//Tiles(const Tiles* tiles, Vec2 move);
 
 	friend std::ostream& operator<< (std::ostream& out, Tiles const& tiles);
 	friend bool operator== (const Tiles& t1, const Tiles& t2);

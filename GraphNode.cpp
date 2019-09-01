@@ -1,4 +1,4 @@
-#include "State.h"
+#include "GraphNode.h"
 
 #include <algorithm>
 #include <iostream>
@@ -90,5 +90,5 @@ GraphNode::GraphNode(GraphNode* parent, Vec2 move)
 	, parent{ parent }
 	, prev_move{ move }
 {
-	parent->num_children++;
+	parent->_num_children++;
 }

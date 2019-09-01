@@ -14,9 +14,9 @@
 #include <random>
 using namespace std;
 
-#include "Move.h"
+#include "Moveset.h"
 #include "Tiles.h"
-#include "State.h"
+#include "GraphNode.h"
 #include "Utils.h"
 
 int main()
@@ -36,6 +36,12 @@ int main()
 	cout << rr2->tiles << '\n';
 	cout << "tiles: " << tiles;
 	cout << "zero: " << tiles.get_zero_position();
+
+
+	GraphNode* nn = new GraphNode(utils::get_solved_tile_order(3, 3));
+	GraphNode* nn2 = new GraphNode(nn, Vec2::UP);
+	cout << nn->tiles.is_solvable();
+	cout << nn2->tiles.is_solvable();
 	return 0;
 	//vector<vector<int>> aa = { {1,2,3},{4,5,6},{7,8,9} };
 	//int* ap = (int*)aa.data();
@@ -75,6 +81,8 @@ int main()
 	//vector<Vec2> open_moves;
 	//vector<Vec2> start_moves = moveset(state->tiles.get_zero_position());
 	//open_moves.insert(open_moves.end(), start_moves.begin(), start_moves.end());
+
+	//vector<GraphNode*> open_nodes{{}}
 
 	//open_states.push_back(curr_state);
 
