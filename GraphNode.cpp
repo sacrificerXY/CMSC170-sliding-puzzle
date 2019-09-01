@@ -6,6 +6,7 @@
 
 using namespace std;
 
+#include "Utils.h"
 //
 //bool State::is_solved() const
 //{
@@ -81,6 +82,7 @@ using namespace std;
 //	return dist;
 //}
 
+
 GraphNode::GraphNode(const Tiles& tiles)
 	: tiles{ tiles }
 { }
@@ -89,9 +91,12 @@ GraphNode::GraphNode(GraphNode* parent, Vec2 move)
 	: tiles{ parent->tiles, move }
 	, parent{ parent }
 	, prev_move{ move }
+	, depth { parent->depth + 1 }
 {
+	total_cost = get_cost(this);
 	parent->_num_children++;
 }
+
 
 bool is_solved(const GraphNode* node)
 {
@@ -101,4 +106,49 @@ bool is_solved(const GraphNode* node)
 bool is_solvable(const GraphNode* node)
 {
 	return node->tiles.is_solvable();
+}
+
+bool are_tiles_same(const GraphNode* node1, const GraphNode* node2)
+{
+	return node1->tiles == node2->tiles;
+}
+
+int get_cost(const GraphNode* node)
+{
+	Vec2 size = node->tiles.size;
+	vector<int> solution(size.x * size.y);
+	iota(solution.begin(), solution.end(), 0);
+	rotate(solution.begin(), solution.begin() + 1, solution.end());
+	vector<Vec2> pos_map(solution.size());
+
+	for (int i : solution)
+	{
+		pos_map[solution[i]] = { i % size.x, i / size.x };
+	}
+	//for (int i : solution)
+	//{
+	//	cout << i << ' ';
+	//}
+	//cout << '\n';
+
+	int dist = 0;
+
+	for (Vec2Iterator pos(size); !pos.finished(); pos++)
+		{
+			Vec2 delta = pos_map[node->tiles.at(pos)] - pos;
+			dist += abs(delta.x);
+			dist += abs(delta.y);
+		}
+	return dist + node->depth;
+	return 0;
+}
+
+bool greater_cost::operator()(const GraphNode* node1, const GraphNode* node2) const
+{
+	return get_cost(node1) > get_cost(node2);
+}
+
+bool lesser_cost::operator()(const GraphNode* node1, const GraphNode* node2) const
+{
+	return !(node1->tiles == node2->tiles) || get_cost(node1) < get_cost(node2);
 }

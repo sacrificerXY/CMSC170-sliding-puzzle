@@ -24,6 +24,11 @@ Vec2 operator-(Vec2 v1, Vec2 v2)
 }
 
 
+bool operator==(const Vec2& v1, const Vec2& v2)
+{
+	return v1.x == v2.x && v1.y == v2.y;
+}
+
 bool operator<(const Vec2& v1, const Vec2& v2)
 {
 	return v1.x < v2.x && v1.y < v2.y;

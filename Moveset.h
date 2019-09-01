@@ -8,12 +8,8 @@
 
 struct Moveset
 {
-	Moveset(int width, int height);
+	Moveset(Vec2 size);
 
-	std::vector<Vec2> at(int x, int y) const
-	{
-		return _moveset[x][y];
-	}
 	std::vector<Vec2> at(Vec2 v) const
 	{
 		return _moveset[v.x][v.y];

@@ -6,17 +6,22 @@
 using namespace std;
 
 #include "Utils.h"
+#include <numeric>
 
 Tiles::Tiles(Vec2 size)
-	: Tiles{ utils::get_solved_tile_order(size) }
+	//: Tiles{ utils::get_solved_tile_order(size) }
+	: size{ size }
+	, zero_pos{ size.x - 1, size.y - 1 }
+	, _tiles{ utils::get_solved_tile_order(size) }
+	, adler_32(utils::adler_32(_tiles))
 { }
 
 Tiles::Tiles(std::vector<std::vector<int>> tile_order)
-	: _tiles{ tile_order }
-	, _zero_pos{utils::get_zero_position(tile_order)}
-{
-	assert(!tile_order.empty() && !tile_order[0].empty() && "Tile order passed should be a non-empty 2D vector");
-}
+	: size{ tile_order[0].size() , tile_order.size() }
+	, zero_pos { utils::get_zero_position(tile_order) }
+	, _tiles{ tile_order }
+	, adler_32(utils::adler_32(tile_order))
+{ }
 
 Tiles::Tiles(const Tiles& tiles, Vec2 move)
 	: Tiles(tiles)
@@ -24,13 +29,41 @@ Tiles::Tiles(const Tiles& tiles, Vec2 move)
 	do_move(move);
 }
 
+//void Tiles::calc_total_cost()
+//{
+//	//Vec2 size = tiles.size;
+//	vector<int> solution(size.x * size.y);
+//	iota(solution.begin(), solution.end(), 0);
+//	rotate(solution.begin(), solution.begin() + 1, solution.end());
+//	vector<Vec2> pos_map(solution.size());
+//
+//	for (int i : solution)
+//	{
+//		pos_map[solution[i]] = { i % size.x, i / size.x };
+//	}
+//	//for (int i : solution)
+//	//{
+//	//	cout << i << ' ';
+//	//}
+//	//cout << '\n';
+//
+//	int dist = 0;
+//
+//	for (Vec2Iterator pos(size); !pos.finished(); pos++)
+//	{
+//		Vec2 delta = pos_map[at(pos)] - pos;
+//		dist += abs(delta.x);
+//		dist += abs(delta.y);
+//	}
+//	total_cost = dist + depth;
+//}
+
 Tiles& Tiles::do_move(Vec2 move)
 {
-	cout << *this << '\n';
-	Vec2 swap_pos = _zero_pos + move;	// get position of tile to swap
-	cout << _zero_pos << ',' << swap_pos << '\n';
-	swap(at(_zero_pos), at(swap_pos));	// do swap
-	_zero_pos = swap_pos;				// update new zero position
+	Vec2 swap_pos = zero_pos + move;	// get position of tile to swap
+	swap(at(zero_pos), at(swap_pos));	// do swap
+	zero_pos = swap_pos;				// update new zero position
+	adler_32 = utils::adler_32(_tiles);
 	return *this;
 }
 
@@ -56,7 +89,7 @@ int Tiles::at(int x, int y) const
 
 Vec2 Tiles::get_zero_position() const
 {
-	return _zero_pos;
+	return zero_pos;
 }
 
 bool Tiles::is_solved() const
@@ -83,7 +116,6 @@ bool Tiles::is_solvable() const
 
 	for (int i = 0; i < width * height; i++) {
 		if (at(indexToVec2(i)) == 0) continue;
-		//cout << at(indexToVec2(i)) << ": ";
 		// Check if a larger number exists after the current
 		// place in the array, if so increment inversions.
 		for (int j = i + 1; j < width * height; j++)
@@ -92,32 +124,29 @@ bool Tiles::is_solvable() const
 			if (at(indexToVec2(i)) > at(indexToVec2(j)))
 			{
 				inversions++;
-				//cout << at(indexToVec2(j)) << ' ';
 			}
 
 		}
-		//cout << '\n';
-
-		//// Determine if the distance of the blank space from the bottom 
-		//// right is even or odd, and increment inversions if it is odd.
-		//if (at(indexToVec2(i)) == 0 && i % 2 == 1) inversions++;
 	}
-	//cout << "inv: " << inversions << '\n';
 	bool width_odd = (width % 2 == 1);
 	bool inversions_even = (inversions % 2 == 0);
-	bool zero_on_odd_row_from_bottom = (((height - _zero_pos.y) % 1) == 1);
+	bool zero_on_odd_row_from_bottom = (((height - zero_pos.y) % 1) == 1);
 
 	if (width_odd && inversions_even) return true;
 	if (!width_odd && (zero_on_odd_row_from_bottom == inversions_even)) return true;
 	return false;
+}
 
-	// If inversions is even, the puzzle is solvable.
-	return (inversions % 2 == 0);
+bool operator<(const Tiles& t1, const Tiles& t2)
+{
+	return t1.adler_32 < t2.adler_32;
 }
 
 bool operator==(const Tiles& t1, const Tiles& t2)
 {
-	return t1._tiles == t2._tiles;
+	//cout << "cmp: " << t1.adler_32 << ' ' << t2.adler_32 << '\n';
+	//return t1._tiles == t2._tiles;
+	return t1.adler_32 == t2.adler_32;
 }
 
 ostream& operator<<(ostream& out, Tiles const& tiles)

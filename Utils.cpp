@@ -40,7 +40,7 @@ namespace utils
 		vector<vector<int>> random_tiles(size.y, vector<int>(size.x));
 		for (int i = 0; i < tile_order.size(); i++)
 		{
-			random_tiles[i / size.y][i % size.y] = tile_order[i];
+			random_tiles[i / size.x][i % size.x] = tile_order[i];
 		}
 		return random_tiles;
 	}
@@ -67,6 +67,36 @@ namespace utils
 		return Vec2(-1, -1);
 	}
 
+	uint32_t adler_32(std::vector<std::vector<int>> tile_order)
+	{
+		static constexpr int p = 65521;
+		uint32_t a = 1;
+		uint32_t b = 0;
+		int w = tile_order[0].size();
+		int h = tile_order.size();
+		int n = w * h;
+
+		int sum = 0;
+		for (int i = n - 1, t = 1; i >= 0; i--, t *= 10)
+		{
+			int x = i % w;
+			int y = i / w;
+			sum += tile_order[y][x] * t;
+
+		}
+		return sum;
+		//for (int i = 0; i < n; i++)
+		//{
+		//	int d = tile_order[y][x];
+		//	a += d;
+		//	b += d * (n - i);
+		//}
+		//b += n;
+
+		//a %= p;
+		//b %= p;
+		//return (b << 16) + a;
+	}
 
 
 	//Vec2LoopYX::Vec2LoopYX(int max_x, int max_y)

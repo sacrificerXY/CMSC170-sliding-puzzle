@@ -9,6 +9,9 @@
 struct Tiles
 {
 public:
+	const Vec2 size;
+	Vec2 zero_pos;
+
 	// Swaps the zero tile in the direction specified by the move vector
 	Tiles& do_move(Vec2 move);
 
@@ -36,15 +39,20 @@ public:
 
 private:
 	std::vector<std::vector<int>> _tiles;
-	Vec2 _zero_pos;
+	int32_t adler_32;
+	//int total_cost;
+
+	//void calc_total_cost();
 
 	friend std::ostream& operator<< (std::ostream& out, Tiles const& tiles);
+	friend bool operator< (const Tiles& t1, const Tiles& t2);
 	friend bool operator== (const Tiles& t1, const Tiles& t2);
 };
 
 bool is_solved(const Tiles& tiles);
 bool is_solvable(const Tiles& tiles);
 
+bool operator< (const Tiles& t1, const Tiles& t2);
 bool operator== (const Tiles& t1, const Tiles& t2);
 std::ostream& operator<< (std::ostream& out, Tiles const& tiles);
 
