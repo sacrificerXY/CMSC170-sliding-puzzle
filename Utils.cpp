@@ -14,7 +14,7 @@ namespace utils
 	{
 		vector<int> tile_order(width * height);
 		iota(tile_order.begin(), tile_order.end(), 1);
-		tile_order.back() = 0;
+		//tile_order.back() = 0;
 		shuffle(tile_order.begin(), tile_order.end(), default_random_engine(random_device()()));
 		return tile_order;
 	}

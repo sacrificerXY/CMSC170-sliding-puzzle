@@ -79,16 +79,27 @@ bool Tiles::is_solvable() const
 	};
 
 	for (int i = 0; i < width * height; i++) {
+		if (at(indexToVec2(i)) == 0) continue;
+		//cout << at(indexToVec2(i)) << ": ";
 		// Check if a larger number exists after the current
 		// place in the array, if so increment inversions.
 		for (int j = i + 1; j < width * height; j++)
-			if (at(indexToVec2(i)) < at(indexToVec2(j))) inversions++;
+		{
+			if (at(indexToVec2(j)) == 0) continue;
+			if (at(indexToVec2(i)) > at(indexToVec2(j)))
+			{
+				inversions++;
+				//cout << at(indexToVec2(j)) << ' ';
+			}
+
+		}
+		//cout << '\n';
 
 		//// Determine if the distance of the blank space from the bottom 
 		//// right is even or odd, and increment inversions if it is odd.
 		//if (at(indexToVec2(i)) == 0 && i % 2 == 1) inversions++;
 	}
-	cout << "inv: " << inversions << '\n';
+	//cout << "inv: " << inversions << '\n';
 	bool width_odd = (width % 2 == 1);
 	bool inversions_even = (inversions % 2 == 0);
 	bool zero_on_odd_row_from_bottom = (((height - _zero_pos.y) % 1) == 1);

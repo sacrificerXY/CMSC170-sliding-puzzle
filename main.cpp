@@ -12,6 +12,7 @@
 #include <iostream>
 #include <algorithm>
 #include <random>
+#include <iomanip>
 using namespace std;
 
 #include "Moveset.h"
@@ -40,8 +41,15 @@ int main()
 
 	GraphNode* nn = new GraphNode(utils::get_solved_tile_order(3, 3));
 	GraphNode* nn2 = new GraphNode(nn, Vec2::UP);
+	GraphNode* nn3 = new GraphNode(Tiles({
+		{12, 1, 10, 2},
+		{7, 11, 4, 14},
+		{5, 0, 9 , 15},
+		{8, 6, 13, 3} }));
+	cout << std::boolalpha;
 	cout << nn->tiles.is_solvable();
 	cout << nn2->tiles.is_solvable();
+	cout << nn3->tiles.is_solvable();
 	return 0;
 	//vector<vector<int>> aa = { {1,2,3},{4,5,6},{7,8,9} };
 	//int* ap = (int*)aa.data();
