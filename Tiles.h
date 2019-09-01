@@ -5,6 +5,7 @@
 
 #include "Vec2.h"
 
+
 struct Tiles
 {
 public:
@@ -25,7 +26,7 @@ public:
 
 
 	// Creates tiles in a solved state
-	Tiles(int width, int height);
+	Tiles(Vec2 size);
 
 	// Creates tiles with a given tile order
 	Tiles(std::vector<std::vector<int>> tile_order);
@@ -40,6 +41,9 @@ private:
 	friend std::ostream& operator<< (std::ostream& out, Tiles const& tiles);
 	friend bool operator== (const Tiles& t1, const Tiles& t2);
 };
+
+bool is_solved(const Tiles& tiles);
+bool is_solvable(const Tiles& tiles);
 
 bool operator== (const Tiles& t1, const Tiles& t2);
 std::ostream& operator<< (std::ostream& out, Tiles const& tiles);

@@ -7,8 +7,8 @@ using namespace std;
 
 #include "Utils.h"
 
-Tiles::Tiles(int width, int height)
-	: Tiles{ utils::get_solved_tile_order(width, height) }
+Tiles::Tiles(Vec2 size)
+	: Tiles{ utils::get_solved_tile_order(size) }
 { }
 
 Tiles::Tiles(std::vector<std::vector<int>> tile_order)
@@ -26,7 +26,9 @@ Tiles::Tiles(const Tiles& tiles, Vec2 move)
 
 Tiles& Tiles::do_move(Vec2 move)
 {
+	cout << *this << '\n';
 	Vec2 swap_pos = _zero_pos + move;	// get position of tile to swap
+	cout << _zero_pos << ',' << swap_pos << '\n';
 	swap(at(_zero_pos), at(swap_pos));	// do swap
 	_zero_pos = swap_pos;				// update new zero position
 	return *this;
@@ -59,9 +61,10 @@ Vec2 Tiles::get_zero_position() const
 
 bool Tiles::is_solved() const
 {
-	int width = _tiles[0].size();
-	int height = _tiles.size();
-	return _tiles == utils::get_solved_tile_order(width, height);
+	Vec2 size(
+		_tiles[0].size(),
+		_tiles.size());
+	return _tiles == utils::get_solved_tile_order(size);
 }
 
 bool Tiles::is_solvable() const

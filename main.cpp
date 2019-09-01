@@ -22,34 +22,41 @@ using namespace std;
 
 int main()
 {
-	for_loop_yx(3, 4)
+	//Tiles tiles{ {{1, 2}, {3, 0}} };
+	//GraphNode* rr = new GraphNode(utils::get_random_tile_order(size));
+	//GraphNode* rr2 = new GraphNode(rr, Vec2::UP);
+	////tiles = Tiles{ tiles, Vec2::LEFT };
+	////tiles.do_move(Vec2::UP)
+	////	.do_move(Vec2::LEFT)
+	////	.do_move(Vec2::DOWN);
+	//cout << rr->tiles << '\n';
+	//cout << rr2->tiles << '\n';
+	//cout << "tiles: " << tiles;
+	//cout << "zero: " << tiles.get_zero_position();
+
+	//Vec2 a, b;
+	//a < b;
+
+	const Vec2 size(3, 3);
+
+	GraphNode* root;
+	do
 	{
-		cout << x << ',' << y << '\n';
-	}
-	Tiles tiles{ {{1, 2}, {3, 0}} };
-	GraphNode* rr = new GraphNode(tiles);
-	GraphNode* rr2 = new GraphNode(rr, Vec2::UP);
-	//tiles = Tiles{ tiles, Vec2::LEFT };
-	//tiles.do_move(Vec2::UP)
-	//	.do_move(Vec2::LEFT)
-	//	.do_move(Vec2::DOWN);
-	cout << rr->tiles << '\n';
-	cout << rr2->tiles << '\n';
-	cout << "tiles: " << tiles;
-	cout << "zero: " << tiles.get_zero_position();
+		root = new GraphNode(utils::get_random_tile_order(size));
+	} while (!is_solvable(root));
 
 
-	GraphNode* nn = new GraphNode(utils::get_solved_tile_order(3, 3));
-	GraphNode* nn2 = new GraphNode(nn, Vec2::UP);
-	GraphNode* nn3 = new GraphNode(Tiles({
-		{12, 1, 10, 2},
-		{7, 11, 4, 14},
-		{5, 0, 9 , 15},
-		{8, 6, 13, 3} }));
-	cout << std::boolalpha;
-	cout << nn->tiles.is_solvable();
-	cout << nn2->tiles.is_solvable();
-	cout << nn3->tiles.is_solvable();
+	//GraphNode* nn = new GraphNode(utils::get_random_tile_order(size));
+	////GraphNode* nn2 = new GraphNode(nn, Vec2::UP);
+	//GraphNode* nn3 = new GraphNode(Tiles({
+	//	{12, 1, 10, 2},
+	//	{7, 11, 4, 14},
+	//	{5, 0, 9 , 15},
+	//	{8, 6, 13, 3} }));
+	//cout << std::boolalpha;
+	std::cout << root->tiles;
+	//cout << nn2->tiles.is_solvable();
+	//cout << nn3->tiles.is_solvable();
 	return 0;
 	//vector<vector<int>> aa = { {1,2,3},{4,5,6},{7,8,9} };
 	//int* ap = (int*)aa.data();

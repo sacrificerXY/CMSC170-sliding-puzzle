@@ -92,3 +92,13 @@ GraphNode::GraphNode(GraphNode* parent, Vec2 move)
 {
 	parent->_num_children++;
 }
+
+bool is_solved(const GraphNode* node)
+{
+	return node->tiles.is_solved();
+}
+
+bool is_solvable(const GraphNode* node)
+{
+	return node->tiles.is_solvable();
+}

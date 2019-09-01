@@ -8,18 +8,18 @@
 
 struct Moveset
 {
-	const int width, height;
 	Moveset(int width, int height);
-	std::vector<Vec2> operator() (int x, int y) const
+
+	std::vector<Vec2> at(int x, int y) const
 	{
-		return moveset[x][y];
+		return _moveset[x][y];
 	}
-	std::vector<Vec2> operator() (Vec2 v) const
+	std::vector<Vec2> at(Vec2 v) const
 	{
-		return (*this)(v.x, v.y);
+		return _moveset[v.x][v.y];
 	}
 private:
-	std::vector<std::vector<std::vector<Vec2>>> moveset;
+	std::vector<std::vector<std::vector<Vec2>>> _moveset;
 };
 
 std::ostream& operator<< (std::ostream& out, std::vector<Vec2> const& moveset);

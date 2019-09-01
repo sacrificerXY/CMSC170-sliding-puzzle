@@ -4,27 +4,14 @@
 
 #include "Vec2.h"
 
-#define for_loop_yx(max_x, max_y) for (int y = 0; y < max_y; y++) for (int x = 0; x < max_x; x++)
-
 namespace utils
 {
-	//struct Vec2LoopYX
-	//{
-	//	int x = 0;
-	//	int y = 0;
-
-	//	Vec2LoopYX(int max_x, int max_y);
-	//	bool not_finished() const;
-	//	void operator++ (int);
-
-	//private:
-	//	int _max_x;
-	//	int _max_y;
-	//};
 
 	std::vector<int> get_random_tile_order(int width, int height);
-	std::vector<std::vector<int>> get_solved_tile_order(int width, int height);
+	std::vector<std::vector<int>> get_solved_tile_order(Vec2 size);
+	std::vector<std::vector<int>> get_random_tile_order(Vec2 size);
 
+	Vec2 get_2d_vector_size(std::vector<std::vector<int>> vector_2d);
 	Vec2 get_zero_position(std::vector < std::vector<int>> vector_2d);
 
 
@@ -37,4 +24,5 @@ namespace utils
 		return first;
 	}
 
+	
 }

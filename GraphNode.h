@@ -24,3 +24,6 @@ private:
 
 };
 
+bool is_solved(const GraphNode* node);
+bool is_solvable(const GraphNode* node);
+
