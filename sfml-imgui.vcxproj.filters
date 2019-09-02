@@ -45,6 +45,9 @@
     <ClCompile Include="Moveset.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="Array16.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Tiles.h">
@@ -60,6 +63,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Moveset.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Array16.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

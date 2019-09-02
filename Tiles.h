@@ -4,11 +4,15 @@
 #include <ostream>
 
 #include "Vec2.h"
+#include "Array16.h"
 
 
 struct Tiles
 {
 public:
+
+	arrays::Array16 arr;
+
 	const Vec2 size;
 	Vec2 zero_pos;
 
@@ -40,6 +44,7 @@ public:
 private:
 	std::vector<std::vector<int>> _tiles;
 	int32_t adler_32;
+	uint64_t checksum;
 	//int total_cost;
 
 	//void calc_total_cost();
@@ -55,4 +60,8 @@ bool is_solvable(const Tiles& tiles);
 bool operator< (const Tiles& t1, const Tiles& t2);
 bool operator== (const Tiles& t1, const Tiles& t2);
 std::ostream& operator<< (std::ostream& out, Tiles const& tiles);
+
+Tiles create_solved(int width, int height);
+
+void move_up(Tiles& tiles);
 

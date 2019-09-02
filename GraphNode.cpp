@@ -150,5 +150,5 @@ bool greater_cost::operator()(const GraphNode* node1, const GraphNode* node2) co
 
 bool lesser_cost::operator()(const GraphNode* node1, const GraphNode* node2) const
 {
-	return !(node1->tiles == node2->tiles) || get_cost(node1) < get_cost(node2);
+	return node1->total_cost < node2->total_cost;
 }

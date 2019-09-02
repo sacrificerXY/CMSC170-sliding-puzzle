@@ -6,6 +6,7 @@
 #include <numeric>
 #include <random>
 #include <iostream>
+#include <bitset>
 
 using namespace std;
 
@@ -15,6 +16,15 @@ namespace utils
 	{
 		vector<int> tile_order(width * height);
 		iota(tile_order.begin(), tile_order.end(), 1);
+		shuffle(tile_order.begin(), tile_order.end(), default_random_engine(random_device()()));
+		return tile_order;
+	}
+
+	std::vector<int> get_random_tile_order(int length)
+	{
+		vector<int> tile_order(length);
+		iota(tile_order.begin(), tile_order.end(), 1);
+		tile_order.back() = 0;
 		shuffle(tile_order.begin(), tile_order.end(), default_random_engine(random_device()()));
 		return tile_order;
 	}
@@ -67,24 +77,38 @@ namespace utils
 		return Vec2(-1, -1);
 	}
 
-	uint32_t adler_32(std::vector<std::vector<int>> tile_order)
+	uint64_t adler_32(std::vector<std::vector<int>> tile_order)
 	{
-		static constexpr int p = 65521;
-		uint32_t a = 1;
-		uint32_t b = 0;
 		int w = tile_order[0].size();
 		int h = tile_order.size();
 		int n = w * h;
-
-		int sum = 0;
-		for (int i = n - 1, t = 1; i >= 0; i--, t *= 10)
+		uint64_t sum = 0;
+		cout << "bits --\n";
+		for (int i = 0; i < n; i++)
+			//for (int i = n - 1, t = 1; i >= 0; i--, t *= 10)
 		{
 			int x = i % w;
 			int y = i / w;
-			sum += tile_order[y][x] * t;
-
+			uint64_t num = tile_order[y][x];
+			sum |= num << (i * 4);
+			cout << bitset<64>(sum) << '\n';
 		}
 		return sum;
+
+
+		//static constexpr int p = 65521;
+		//uint32_t a = 1;
+		//uint32_t b = 0;
+
+		//int sum = 0;
+		//for (int i = n - 1, t = 1; i >= 0; i--, t *= 10)
+		//{
+		//	int x = i % w;
+		//	int y = i / w;
+		//	sum += tile_order[y][x] * t;
+
+		//}
+		//return sum;
 		//for (int i = 0; i < n; i++)
 		//{
 		//	int d = tile_order[y][x];
@@ -96,6 +120,21 @@ namespace utils
 		//a %= p;
 		//b %= p;
 		//return (b << 16) + a;
+	}
+
+	void swap_bits(uint64_t& b, int i, int j, int n)
+	{
+		uint64_t x = ((b >> i) ^ (b >> j)) & ((1 << n) - 1);
+		b = b ^ ((x << i) | (x << j));
+	}
+
+	int get_int(uint64_t bits, int pos)
+	{
+		int shift = 4 * pos;
+		uint64_t mask = 0b1111;
+		mask = mask << shift;
+		//cout << bitset<64>(mask) << '\n';
+		return (bits & mask) >> shift;
 	}
 
 

@@ -13,14 +13,14 @@ Tiles::Tiles(Vec2 size)
 	: size{ size }
 	, zero_pos{ size.x - 1, size.y - 1 }
 	, _tiles{ utils::get_solved_tile_order(size) }
-	, adler_32(utils::adler_32(_tiles))
+	, checksum(utils::adler_32(_tiles))
 { }
 
 Tiles::Tiles(std::vector<std::vector<int>> tile_order)
 	: size{ tile_order[0].size() , tile_order.size() }
 	, zero_pos { utils::get_zero_position(tile_order) }
 	, _tiles{ tile_order }
-	, adler_32(utils::adler_32(tile_order))
+	, checksum(utils::adler_32(tile_order))
 { }
 
 Tiles::Tiles(const Tiles& tiles, Vec2 move)
@@ -57,13 +57,15 @@ Tiles::Tiles(const Tiles& tiles, Vec2 move)
 //	}
 //	total_cost = dist + depth;
 //}
-
+#include <bitset>
 Tiles& Tiles::do_move(Vec2 move)
 {
 	Vec2 swap_pos = zero_pos + move;	// get position of tile to swap
 	swap(at(zero_pos), at(swap_pos));	// do swap
 	zero_pos = swap_pos;				// update new zero position
-	adler_32 = utils::adler_32(_tiles);
+	//cout << bitset<64>(checksum).to_string() << '\n';
+	utils::swap_bits(checksum, 0, 60, 4);
+	//cout << bitset<64>(checksum).to_string() << '\n';
 	return *this;
 }
 
@@ -139,7 +141,7 @@ bool Tiles::is_solvable() const
 
 bool operator<(const Tiles& t1, const Tiles& t2)
 {
-	return t1.adler_32 < t2.adler_32;
+	return t1.checksum < t2.checksum;
 }
 
 bool operator==(const Tiles& t1, const Tiles& t2)
